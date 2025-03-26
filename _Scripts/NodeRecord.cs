@@ -1,13 +1,13 @@
 // Thông tin trong hàng đợi (open set)
 public class NodeRecord : IComparable<NodeRecord>
 {
-    public string? Node { get; set; }
-    public string? Parent { get; set; }  // Dùng để truy vết đường đi
+    public string Node { get; set; }
+    public string Parent { get; set; }  // Dùng để truy vết đường đi
     public int G { get; set; }          // g(v)
     public int H { get; set; }          // h(v)
     public int F => G + H;              // f(v) = g(v) + h(v)
 
-    public NodeRecord(string? node, string? parent, int g, int h)
+    public NodeRecord(string node, string parent, int g, int h)
     {
         Node = node;
         Parent = parent;

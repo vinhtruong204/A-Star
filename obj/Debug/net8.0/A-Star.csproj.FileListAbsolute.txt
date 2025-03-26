@@ -13,3 +13,4 @@ D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\A-Star.pdb
 D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\A-Star.genruntimeconfig.cache
 D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\ref\A-Star.dll
 D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\A-Star.sourcelink.json
+d:\Learn\Artificial Intelligence\A-Star\bin\Debug\net8.0\input.txt
