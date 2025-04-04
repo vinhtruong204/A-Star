@@ -83,10 +83,6 @@ public class AStarAlgorithm
 
     public void Solve()
     {
-        NodeRecord startNode = new NodeRecord(start, null!, 0, heuristic[start]);
-
-        openSet.Enqueue(startNode, startNode.F);
-
         StringBuilder sb = new StringBuilder();
 
         // Định nghĩa độ rộng cột
@@ -103,6 +99,9 @@ public class AStarAlgorithm
         sb.AppendLine($"{"TT".PadRight(col1Width)} | {"TTK".PadRight(col2Width)} | {"k(u, v)".PadRight(col3Width)} | {"h(v)".PadRight(col4Width)}" +
                       $" | {"g(v)".PadRight(col5Width)} | {"f(v)".PadRight(col6Width)} | {"DSL".PadRight(col7Width)}");
         sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15)); // Đường kẻ ngang
+
+        NodeRecord startNode = new NodeRecord(start, null!, 0, heuristic[start]);
+        openSet.Enqueue(startNode, startNode.F);
 
         while (openSet.Count > 0)
         {
