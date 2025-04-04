@@ -5,12 +5,12 @@ using System.Text;
 public class AStarAlgorithm
 {
     private Dictionary<string, List<Edge>> graph;
-    private Dictionary<string, int> heuristic; // Hàm heuristic h(v)
-    private HashSet<string> closedSet; // Tập các đỉnh đã được kiểm tra
-    private PriorityQueue<NodeRecord, int> openSet; // Tập các đỉnh chưa được kiểm tra (hàng đợi ưu tiên) 
-    private Dictionary<string, NodeRecord> nodeRecords; // Lưu trữ thông tin về các đỉnh trong open set
-    private string start; // Đỉnh bắt đầu
-    private string goal; // Đỉnh đích
+    private Dictionary<string, int> heuristic;
+    private HashSet<string> closedSet;
+    private PriorityQueue<NodeRecord, int> openSet; 
+    private Dictionary<string, NodeRecord> nodeRecords;
+    private string start;
+    private string goal;
 
     public AStarAlgorithm()
     {
@@ -34,7 +34,6 @@ public class AStarAlgorithm
         string[] lines = File.ReadAllLines(filePath);
         int index = 0;
 
-        // Đọc heuristic
         while (!string.IsNullOrWhiteSpace(lines[index]) && lines[index].Split().Length == 2)
         {
             string[] parts = lines[index].Split();
@@ -43,7 +42,6 @@ public class AStarAlgorithm
             index++;
         }
 
-        // Đọc danh sách cạnh
         while (!string.IsNullOrWhiteSpace(lines[index]) && lines[index].Split().Length == 3)
         {
             string[] parts = lines[index].Split();
@@ -56,7 +54,6 @@ public class AStarAlgorithm
             index++;
         }
 
-        // Đọc điểm bắt đầu và điểm đích
         start = lines[index].Trim();
         goal = lines[index + 1].Trim();
 
@@ -85,17 +82,16 @@ public class AStarAlgorithm
     {
         StringBuilder sb = new StringBuilder();
 
-        // Định nghĩa độ rộng cột
-        int col1Width = 5;   // TT
-        int col2Width = 5;   // TTK
-        int col3Width = 8;   // k(u, v)
-        int col4Width = 8;   // h(v)
-        int col5Width = 8;   // g(v)
-        int col6Width = 8;   // f(v) = g(v) + h(v)
-        int col7Width = 50;  // DSL
+        int col1Width = 5;
+        int col2Width = 5;
+        int col3Width = 8;
+        int col4Width = 8;
+        int col5Width = 8;
+        int col6Width = 8;
+        int col7Width = 50; 
 
 
-        // Ghi tiêu đề bảng
+        
         sb.AppendLine($"{"TT".PadRight(col1Width)} | {"TTK".PadRight(col2Width)} | {"k(u, v)".PadRight(col3Width)} | {"h(v)".PadRight(col4Width)}" +
                       $" | {"g(v)".PadRight(col5Width)} | {"f(v)".PadRight(col6Width)} | {"DSL".PadRight(col7Width)}");
         sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15)); // Đường kẻ ngang
@@ -134,7 +130,6 @@ public class AStarAlgorithm
                 }
 
 
-                // Cập nhật DSL (Danh sách đỉnh trong Priority Queue)
                 List<string> openSetList = openSet.UnorderedItems
                                                 .OrderBy(n => n.Priority)
                                                 .Select(n => $"{n.Element.Node}({n.Priority})")
