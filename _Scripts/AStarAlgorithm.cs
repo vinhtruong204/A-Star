@@ -22,9 +22,7 @@ public class AStarAlgorithm
         start = string.Empty;
         goal = string.Empty;
 
-        #region Graph Input
         ReadInputFile("input.txt");
-        #endregion
 
         Solve();
     }
@@ -107,15 +105,20 @@ public class AStarAlgorithm
             if (currentNode.Node == goal)
             {
                 Console.WriteLine("Path found!");
+                sb.AppendLine($"{currentNode.Node.PadRight(col1Width)} | TTKT/Stop " );
                 PrintPath(currentNode, sb);
-                // Ghi vào file
+                
                 File.WriteAllText("output.txt", sb.ToString());
                 return;
             }
 
             bool isFirstLine = false;
+            int currentEdgeCount = 0;
+            int totalEdgeCount = graph[currentNode.Node].Count;
+
             foreach (Edge edge in graph[currentNode.Node])
             {
+                currentEdgeCount++;
                 if (closedSet.Contains(edge.Neighbor))
                     continue;
 
@@ -140,9 +143,11 @@ public class AStarAlgorithm
                 sb.AppendLine($"{(!isFirstLine ? currentNode.Node.PadRight(col1Width) : " ".PadRight(col1Width))} | {edge.Neighbor.PadRight(col2Width)} | " +
                               $"{edge.Cost.ToString().PadRight(col3Width)} | {h.ToString().PadRight(col4Width)} | " +
                               $"{g.ToString().PadRight(col5Width)} | {neighborNode.F.ToString().PadRight(col6Width)} | " +
-                              $"{openSetStr.PadRight(col7Width)}"); // Ghi DSL vào bảng
+                              $"{(currentEdgeCount == totalEdgeCount? openSetStr.PadRight(col7Width) : " ".PadRight(col7Width))}");
                 isFirstLine = true;
             }
+
+
 
         }
 

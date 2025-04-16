@@ -10,7 +10,6 @@ namespace AStarExample
         static void Main()
         {
             AStarAlgorithm aStar = new();
-            // aStar.PrintGraph();
         }
     }
 }
