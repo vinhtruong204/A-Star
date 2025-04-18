@@ -7,7 +7,7 @@ public class AStarAlgorithm
     private Dictionary<string, List<Edge>> graph;
     private Dictionary<string, int> heuristic;
     private PriorityQueue<NodeRecord, int> priorityQueue;
-    private Dictionary<string, NodeRecord> nodeRecords;
+    private List<NodeRecord> nodeRecords;
     private string start;
     private string goal;
 
@@ -16,7 +16,7 @@ public class AStarAlgorithm
         graph = new Dictionary<string, List<Edge>>();
         heuristic = new Dictionary<string, int>();
         priorityQueue = new PriorityQueue<NodeRecord, int>();
-        nodeRecords = new Dictionary<string, NodeRecord>();
+        nodeRecords = new List<NodeRecord>();
         start = string.Empty;
         goal = string.Empty;
 
@@ -75,7 +75,7 @@ public class AStarAlgorithm
 
     public void Solve()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
         int col1Width = 5;
         int col2Width = 5;
@@ -85,9 +85,13 @@ public class AStarAlgorithm
         int col6Width = 8;
         int col7Width = 50;
 
-
-        sb.AppendLine($"{"TT".PadRight(col1Width)} | {"TTK".PadRight(col2Width)} | {"k(u, v)".PadRight(col3Width)} | {"h(v)".PadRight(col4Width)}" +
-                      $" | {"g(v)".PadRight(col5Width)} | {"f(v)".PadRight(col6Width)} | {"DSL".PadRight(col7Width)}");
+        sb.AppendLine($"{"TT".PadRight(col1Width)} | " +
+                      $"{"TTK".PadRight(col2Width)} | " +
+                      $"{"k(u, v)".PadRight(col3Width)} | " +
+                      $"{"h(v)".PadRight(col4Width)} | " +
+                      $"{"g(v)".PadRight(col5Width)} | " +
+                      $"{"f(v)".PadRight(col6Width)} | " +
+                      $"{"DSL".PadRight(col7Width)}");
         sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15));
 
         NodeRecord startNode = new NodeRecord(start, null!, 0, heuristic[start]);
@@ -119,25 +123,40 @@ public class AStarAlgorithm
                 int h = heuristic[edge.Neighbor];
                 NodeRecord neighborNode = new NodeRecord(edge.Neighbor, currentNode.Node, g, h);
 
-
-                nodeRecords[edge.Neighbor] = neighborNode;
+                nodeRecords.Add(neighborNode);
                 priorityQueue.Enqueue(neighborNode, neighborNode.F);
 
+                if (currentEdgeCount < totalEdgeCount)
+                {
+                    sb.AppendLine($"{(!isFirstLine ? currentNodeInfor.PadRight(col1Width) : " ".PadRight(col1Width))} | " +
+                                  $"{edge.Neighbor.PadRight(col2Width)} | " +
+                                  $"{edge.Cost.ToString().PadRight(col3Width)} | " +
+                                  $"{h.ToString().PadRight(col4Width)} | " +
+                                  $"{g.ToString().PadRight(col5Width)} | " +
+                                  $"{neighborNode.F.ToString().PadRight(col6Width)} | " +
+                                  $"{" ".PadRight(col7Width)}");
+                }
+                else
+                {
+                    sb.Append($"{(!isFirstLine ? currentNodeInfor.PadRight(col1Width) : " ".PadRight(col1Width))} | " +
+                                  $"{edge.Neighbor.PadRight(col2Width)} | " +
+                                  $"{edge.Cost.ToString().PadRight(col3Width)} | " +
+                                  $"{h.ToString().PadRight(col4Width)} | " +
+                                  $"{g.ToString().PadRight(col5Width)} | " +
+                                  $"{neighborNode.F.ToString().PadRight(col6Width)} | ");
+                }
+                
+                isFirstLine = true;
+            }
 
-                List<string> openSetList = priorityQueue.UnorderedItems
+            List<string> openSetList = priorityQueue.UnorderedItems
                                                 .OrderBy(n => n.Priority)
                                                 .Select(n => $"{n.Element.Node}({n.Priority})")
                                                 .ToList();
 
-                string openSetStr = string.Join(", ", openSetList);
+            string openSetStr = string.Join(", ", openSetList);
 
-                sb.AppendLine($"{(!isFirstLine ? currentNodeInfor.PadRight(col1Width) : " ".PadRight(col1Width))} | {edge.Neighbor.PadRight(col2Width)} | " +
-                              $"{edge.Cost.ToString().PadRight(col3Width)} | {h.ToString().PadRight(col4Width)} | " +
-                              $"{g.ToString().PadRight(col5Width)} | {neighborNode.F.ToString().PadRight(col6Width)} | " +
-                              $"{(currentEdgeCount == totalEdgeCount ? openSetStr.PadRight(col7Width) : " ".PadRight(col7Width))}");
-                isFirstLine = true;
-            }
-
+            sb.AppendLine(openSetStr.PadRight(col7Width));
             sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15));
 
         }
@@ -146,10 +165,10 @@ public class AStarAlgorithm
         File.WriteAllText("output.txt", sb.ToString());
     }
 
-    private void PrintPath(NodeRecord currentNode, StringBuilder sb)
+    private void PrintPath(NodeRecord? currentNode, StringBuilder sb)
     {
         List<string> path = new List<string>();
-        int cost = currentNode.F;
+        int cost = currentNode!.F;
 
         while (currentNode != null)
         {
@@ -161,7 +180,7 @@ public class AStarAlgorithm
                 break;
             }
 
-            currentNode = nodeRecords[currentNode.Parent];
+            currentNode = nodeRecords.FirstOrDefault(n => n.Node == currentNode.Parent);
         }
 
         path.Reverse();

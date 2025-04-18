@@ -14,8 +14,7 @@ public class NodeRecord : IComparable<NodeRecord>
         G = g;
         H = h;
     }
-
-    // Để sắp xếp trong priority queue theo f
+    
     public int CompareTo(NodeRecord? other)
     {
         return this.F.CompareTo(other?.F);
