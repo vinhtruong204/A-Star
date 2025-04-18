@@ -6,8 +6,7 @@ public class AStarAlgorithm
 {
     private Dictionary<string, List<Edge>> graph;
     private Dictionary<string, int> heuristic;
-    private HashSet<string> closedSet;
-    private PriorityQueue<NodeRecord, int> openSet; 
+    private PriorityQueue<NodeRecord, int> priorityQueue;
     private Dictionary<string, NodeRecord> nodeRecords;
     private string start;
     private string goal;
@@ -16,8 +15,7 @@ public class AStarAlgorithm
     {
         graph = new Dictionary<string, List<Edge>>();
         heuristic = new Dictionary<string, int>();
-        closedSet = new HashSet<string>();
-        openSet = new PriorityQueue<NodeRecord, int>();
+        priorityQueue = new PriorityQueue<NodeRecord, int>();
         nodeRecords = new Dictionary<string, NodeRecord>();
         start = string.Empty;
         goal = string.Empty;
@@ -45,7 +43,6 @@ public class AStarAlgorithm
             string[] parts = lines[index].Split();
             string from = parts[0], to = parts[1];
             int cost = int.Parse(parts[2]);
-
 
             graph[from].Add(new Edge(to, cost));
 
@@ -86,28 +83,26 @@ public class AStarAlgorithm
         int col4Width = 8;
         int col5Width = 8;
         int col6Width = 8;
-        int col7Width = 50; 
+        int col7Width = 50;
 
 
-        
         sb.AppendLine($"{"TT".PadRight(col1Width)} | {"TTK".PadRight(col2Width)} | {"k(u, v)".PadRight(col3Width)} | {"h(v)".PadRight(col4Width)}" +
                       $" | {"g(v)".PadRight(col5Width)} | {"f(v)".PadRight(col6Width)} | {"DSL".PadRight(col7Width)}");
-        sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15)); // Đường kẻ ngang
+        sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15));
 
         NodeRecord startNode = new NodeRecord(start, null!, 0, heuristic[start]);
-        openSet.Enqueue(startNode, startNode.F);
+        priorityQueue.Enqueue(startNode, startNode.F);
 
-        while (openSet.Count > 0)
+        while (priorityQueue.Count > 0)
         {
-            NodeRecord currentNode = openSet.Dequeue();
-            closedSet.Add(currentNode.Node);
+            NodeRecord currentNode = priorityQueue.Dequeue();
+            string currentNodeInfor = currentNode.Node + "(" + currentNode.F + ")";
 
             if (currentNode.Node == goal)
             {
-                Console.WriteLine("Path found!");
-                sb.AppendLine($"{currentNode.Node.PadRight(col1Width)} | TTKT/Stop " );
+                sb.AppendLine($"{currentNodeInfor.PadRight(col1Width)} | TTKT/Stop ");
                 PrintPath(currentNode, sb);
-                
+
                 File.WriteAllText("output.txt", sb.ToString());
                 return;
             }
@@ -119,35 +114,31 @@ public class AStarAlgorithm
             foreach (Edge edge in graph[currentNode.Node])
             {
                 currentEdgeCount++;
-                if (closedSet.Contains(edge.Neighbor))
-                    continue;
 
                 int g = currentNode.G + edge.Cost;
                 int h = heuristic[edge.Neighbor];
                 NodeRecord neighborNode = new NodeRecord(edge.Neighbor, currentNode.Node, g, h);
 
-                if (!nodeRecords.ContainsKey(edge.Neighbor) || g < nodeRecords[edge.Neighbor].G)
-                {
-                    nodeRecords[edge.Neighbor] = neighborNode;
-                    openSet.Enqueue(neighborNode, neighborNode.F);
-                }
+
+                nodeRecords[edge.Neighbor] = neighborNode;
+                priorityQueue.Enqueue(neighborNode, neighborNode.F);
 
 
-                List<string> openSetList = openSet.UnorderedItems
+                List<string> openSetList = priorityQueue.UnorderedItems
                                                 .OrderBy(n => n.Priority)
                                                 .Select(n => $"{n.Element.Node}({n.Priority})")
                                                 .ToList();
 
                 string openSetStr = string.Join(", ", openSetList);
 
-                sb.AppendLine($"{(!isFirstLine ? currentNode.Node.PadRight(col1Width) : " ".PadRight(col1Width))} | {edge.Neighbor.PadRight(col2Width)} | " +
+                sb.AppendLine($"{(!isFirstLine ? currentNodeInfor.PadRight(col1Width) : " ".PadRight(col1Width))} | {edge.Neighbor.PadRight(col2Width)} | " +
                               $"{edge.Cost.ToString().PadRight(col3Width)} | {h.ToString().PadRight(col4Width)} | " +
                               $"{g.ToString().PadRight(col5Width)} | {neighborNode.F.ToString().PadRight(col6Width)} | " +
-                              $"{(currentEdgeCount == totalEdgeCount? openSetStr.PadRight(col7Width) : " ".PadRight(col7Width))}");
+                              $"{(currentEdgeCount == totalEdgeCount ? openSetStr.PadRight(col7Width) : " ".PadRight(col7Width))}");
                 isFirstLine = true;
             }
 
-
+            sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15));
 
         }
 

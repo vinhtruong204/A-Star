@@ -1,4 +1,4 @@
-// Lưu trữ thông tin về 1 cạnh: đỉnh kề và chi phí
+
 public class Edge
 {
     public string Neighbor { get; set; }
