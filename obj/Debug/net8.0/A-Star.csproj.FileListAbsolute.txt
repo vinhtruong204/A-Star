@@ -14,3 +14,19 @@ D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\A-Star.genruntimeconfig
 D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\ref\A-Star.dll
 D:\Learn\Artificial Intelligence\A-Star\obj\Debug\net8.0\A-Star.sourcelink.json
 d:\Learn\Artificial Intelligence\A-Star\bin\Debug\net8.0\input.txt
+D:\A-Star\bin\Debug\net8.0\input.txt
+D:\A-Star\bin\Debug\net8.0\A-Star.exe
+D:\A-Star\bin\Debug\net8.0\A-Star.deps.json
+D:\A-Star\bin\Debug\net8.0\A-Star.runtimeconfig.json
+D:\A-Star\bin\Debug\net8.0\A-Star.dll
+D:\A-Star\bin\Debug\net8.0\A-Star.pdb
+D:\A-Star\obj\Debug\net8.0\A-Star.GeneratedMSBuildEditorConfig.editorconfig
+D:\A-Star\obj\Debug\net8.0\A-Star.AssemblyInfoInputs.cache
+D:\A-Star\obj\Debug\net8.0\A-Star.AssemblyInfo.cs
+D:\A-Star\obj\Debug\net8.0\A-Star.csproj.CoreCompileInputs.cache
+D:\A-Star\obj\Debug\net8.0\A-Star.sourcelink.json
+D:\A-Star\obj\Debug\net8.0\A-Star.dll
+D:\A-Star\obj\Debug\net8.0\refint\A-Star.dll
+D:\A-Star\obj\Debug\net8.0\A-Star.pdb
+D:\A-Star\obj\Debug\net8.0\A-Star.genruntimeconfig.cache
+D:\A-Star\obj\Debug\net8.0\ref\A-Star.dll

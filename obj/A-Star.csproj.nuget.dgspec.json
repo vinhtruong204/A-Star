@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Learn\\Artificial Intelligence\\A-Star\\A-Star.csproj": {}
+    "D:\\A-Star\\A-Star.csproj": {}
   },
   "projects": {
-    "D:\\Learn\\Artificial Intelligence\\A-Star\\A-Star.csproj": {
+    "D:\\A-Star\\A-Star.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Learn\\Artificial Intelligence\\A-Star\\A-Star.csproj",
+        "projectUniqueName": "D:\\A-Star\\A-Star.csproj",
         "projectName": "A-Star",
-        "projectPath": "D:\\Learn\\Artificial Intelligence\\A-Star\\A-Star.csproj",
+        "projectPath": "D:\\A-Star\\A-Star.csproj",
         "packagesPath": "C:\\Users\\vt383\\.nuget\\packages\\",
-        "outputPath": "D:\\Learn\\Artificial Intelligence\\A-Star\\obj\\",
+        "outputPath": "D:\\A-Star\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vt383\\AppData\\Roaming\\NuGet\\NuGet.Config"

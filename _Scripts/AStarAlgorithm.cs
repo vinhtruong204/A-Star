@@ -7,7 +7,7 @@ public class AStarAlgorithm
     private Dictionary<string, List<Edge>> graph;
     private Dictionary<string, int> heuristic;
     private PriorityQueue<NodeRecord, int> priorityQueue;
-    private List<NodeRecord> nodeRecords;
+    private Dictionary<string, NodeRecord> nodeRecords;
     private string start;
     private string goal;
 
@@ -16,7 +16,7 @@ public class AStarAlgorithm
         graph = new Dictionary<string, List<Edge>>();
         heuristic = new Dictionary<string, int>();
         priorityQueue = new PriorityQueue<NodeRecord, int>();
-        nodeRecords = new List<NodeRecord>();
+        nodeRecords = new Dictionary<string, NodeRecord>();
         start = string.Empty;
         goal = string.Empty;
 
@@ -95,6 +95,8 @@ public class AStarAlgorithm
         sb.AppendLine(new string('-', col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + col7Width + 15));
 
         NodeRecord startNode = new NodeRecord(start, null!, 0, heuristic[start]);
+        
+        nodeRecords[startNode.Node] = startNode;
         priorityQueue.Enqueue(startNode, startNode.F);
 
         while (priorityQueue.Count > 0)
@@ -123,7 +125,7 @@ public class AStarAlgorithm
                 int h = heuristic[edge.Neighbor];
                 NodeRecord neighborNode = new NodeRecord(edge.Neighbor, currentNode.Node, g, h);
 
-                nodeRecords.Add(neighborNode);
+                nodeRecords[neighborNode.Node] = neighborNode;
                 priorityQueue.Enqueue(neighborNode, neighborNode.F);
 
                 if (currentEdgeCount < totalEdgeCount)
@@ -174,13 +176,7 @@ public class AStarAlgorithm
         {
             path.Add(currentNode.Node);
 
-            if (currentNode.Parent == start)
-            {
-                path.Add(currentNode.Parent);
-                break;
-            }
-
-            currentNode = nodeRecords.FirstOrDefault(n => n.Node == currentNode.Parent);
+            currentNode = currentNode.Parent != null ? nodeRecords[currentNode.Parent] : null;
         }
 
         path.Reverse();
